@@ -1,4 +1,5 @@
 export class MenuPage extends HTMLElement {
+   
     constructor() {
         super();
      this.root = this.attachShadow({mode : 'open'})
@@ -24,7 +25,7 @@ export class MenuPage extends HTMLElement {
         window.addEventListener("appmenuchange" , () => {
             this.render()
         })
-
+        this.render()
     }
     render(){
       if(app.store.menu) {

@@ -1,18 +1,20 @@
 import { loadProductById } from "../services/Menu.js";
+import { addToCart } from "../services/Order.js";
 
 export class DetailsPage extends HTMLElement {
     constructor() {
         super();
         
         this.root = this.attachShadow({mode : "open"});
+        const template = document.getElementById("details-page-template");
+        const content = template.content.cloneNode(true);
         const styles = document.createElement("style");
+        this.root.appendChild(content)
         this.root.appendChild(styles);
 
-        const template = document.getElementById("details-page-template");
-        this.root.appendChild(template)
 
         async function loadCSS() {
-         const request = await fetch("components/DetailsPage.css");
+         const request = await fetch("/components/DetailsPage.css");
          styles.textContent =await  request.text();
         }
         loadCSS();
@@ -30,7 +32,8 @@ export class DetailsPage extends HTMLElement {
          this.root.querySelector(".description").textContent = this.product.description;
          this.root.querySelector(".price").textContent = `$ ${this.product.price.toFixed(2)}`;
          this.root.querySelector("button").addEventListener("click" , event => {
-            app.router.go('/order');
+          addToCart(this.product.id);  
+          app.router.go('/order');
          })
     } else {
         alert("invalid id")
